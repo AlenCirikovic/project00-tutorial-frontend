@@ -1,0 +1,31 @@
+.layout-container {
+  height: calc(100vh - 200px);
+}
+
+#login-page footer,
+#signup-page footer {
+  display: none !important;
+}
+
+.login-form,
+.register-form {
+  width: 100%;
+  width: min(100%, 420px);
+  margin: 0 auto;
+  padding: 25px 0;
+}
+
+.sidebar__btn-menu,
+.topbar {
+  height: 80px;
+}
+
+.topbar__avatar {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+.topbar__avatar img {
+  width: 50px !important;
+  height: 50px !important;
+}

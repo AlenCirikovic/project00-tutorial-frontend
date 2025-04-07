@@ -1,0 +1,15 @@
+@import '../fonts/fonts.css';
+// Override Bootstrap Variables.
+// For example: $grid-gutter-width-base:  20px;
+// For example: $grid-gutter-width: 20px;
+
+/* make the customizations */
+$font-family-base: 'Montserrat';
+
+//Bootstrap
+@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap/scss/bootstrap-grid';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/breakpoints';
+
+@import 'custom';
