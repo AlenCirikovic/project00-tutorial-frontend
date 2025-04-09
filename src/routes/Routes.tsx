@@ -111,13 +111,13 @@ export const AppRoutes: AppRoute[] = [
   },
   // Public Routes
   {
-    type: RouteType.PRIVATE,
-    path: '/dashboard',
+    type: RouteType.PUBLIC,
+    path: '/',
     children: <Home />,
   },
   // 404 Error
   {
-    type: RouteType.PRIVATE,
+    type: RouteType.PUBLIC,
     path: '*',
     children: <Page404 />,
   },
