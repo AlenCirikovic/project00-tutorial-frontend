@@ -1,6 +1,6 @@
 import Layout from 'components/ui/Layout'
 import LoginForm from 'components/ui/user/LoginForm'
-import React, { FC } from 'react'
+import { FC } from 'react'
 
 const Login: FC = () => {
   return (
