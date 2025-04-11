@@ -1,8 +1,8 @@
 import { apiRoutes } from 'constants/apiConstants'
-import { apiRequest } from './Api'
 import { LoginUserFields } from 'hooks/react-hook-form/useLogin'
 import { UserType } from 'models/auth'
 import { RegisterUserFields } from 'hooks/react-hook-form/useRegister'
+import { apiRequest } from './Api'
 
 export const fetchUser = async () =>
   apiRequest<undefined, UserType>('get', apiRoutes.FETCH_USER)
