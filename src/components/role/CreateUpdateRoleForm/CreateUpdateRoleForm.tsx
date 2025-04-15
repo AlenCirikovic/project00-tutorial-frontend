@@ -1,4 +1,7 @@
-import { CreateUpdateRoleFields, useCreateUpdateRoleForm } from 'hooks/react-hook-form/useCreateUpdateRole'
+import {
+  CreateUpdateRoleFields,
+  useCreateUpdateRoleForm,
+} from 'hooks/react-hook-form/useCreateUpdateRole'
 import { FC, useEffect, useState } from 'react'
 import ToastContainer from 'react-bootstrap/ToastContainer'
 import Toast from 'react-bootstrap/Toast'
@@ -14,7 +17,6 @@ import { PermissionType, RoleType } from 'models/role'
 import { useQuery } from 'react-query'
 import { routes } from 'constants/routesConstants'
 
-
 interface Props {
   defaultValues?: RoleType
 }
@@ -23,42 +25,42 @@ interface StatePermissions extends PermissionType {
   defaultChecked: boolean
 }
 
-
 const CreateUpdateRoleForm: FC<Props> = ({ defaultValues }) => {
   const navigate = useNavigate()
   const { handleSubmit, errors, control, register } = useCreateUpdateRoleForm({
-    defaultValues
+    defaultValues,
   })
   const [apiError, setApiError] = useState('')
   const [showError, setShowError] = useState(false)
 
-  const [statePermissions, setStatePermissions] = useState<StatePermissions[]>([])
+  const [statePermissions, setStatePermissions] = useState<StatePermissions[]>(
+    [],
+  )
 
   const { data: permissionData } = useQuery(
     ['permissions'],
     API.fetchPermissions,
     {
-      refetchOnWindowFocus: false
-    }
+      refetchOnWindowFocus: false,
+    },
   )
 
   const onSubmit = handleSubmit(async (data: CreateUpdateRoleFields) => {
     if (!defaultValues) await handleAdd(data)
     else await handleUpdate(data)
-
   })
 
   const handleAdd = async (data: CreateUpdateRoleFields) => {
-      const response = await API.createRole(data)
-      if (response.data?.statusCode === StatusCode.BAD_REQUEST) {
-        setApiError(response.data.message)
-        setShowError(true)
-      } else if (response.data?.statusCode === StatusCode.INTERNAL_SERVER_ERROR) {
-        setApiError(response.data.message)
-        setShowError(true)
-      } else {
-        navigate(`${routes.DASHBOARD_PREFIX}/roles`)
-      }
+    const response = await API.createRole(data)
+    if (response.data?.statusCode === StatusCode.BAD_REQUEST) {
+      setApiError(response.data.message)
+      setShowError(true)
+    } else if (response.data?.statusCode === StatusCode.INTERNAL_SERVER_ERROR) {
+      setApiError(response.data.message)
+      setShowError(true)
+    } else {
+      navigate(`${routes.DASHBOARD_PREFIX}/roles`)
+    }
   }
 
   const handleUpdate = async (data: CreateUpdateRoleFields) => {
@@ -79,9 +81,20 @@ const CreateUpdateRoleForm: FC<Props> = ({ defaultValues }) => {
       const arrayOfPermissions: StatePermissions[] = []
       let includes = false
       if (defaultValues) {
-        for (let rootIndex = 0; rootIndex < permissionData.data.length; rootIndex++) {
-          for (let nestedIndex = 0; nestedIndex < defaultValues.permissions.length; nestedIndex++) {
-            if (permissionData.data[rootIndex].id === defaultValues.permissions[nestedIndex].id) {
+        for (
+          let rootIndex = 0;
+          rootIndex < permissionData.data.length;
+          rootIndex++
+        ) {
+          for (
+            let nestedIndex = 0;
+            nestedIndex < defaultValues.permissions.length;
+            nestedIndex++
+          ) {
+            if (
+              permissionData.data[rootIndex].id ===
+              defaultValues.permissions[nestedIndex].id
+            ) {
               includes = true
             }
           }
@@ -98,18 +111,17 @@ const CreateUpdateRoleForm: FC<Props> = ({ defaultValues }) => {
           }
           includes = false
         }
-        } else {
-          permissionData.data.forEach((p: PermissionType) => {
-            arrayOfPermissions.push({
-              ...p,
-              defaultChecked: false
-            })
+      } else {
+        permissionData.data.forEach((p: PermissionType) => {
+          arrayOfPermissions.push({
+            ...p,
+            defaultChecked: false,
           })
-        }
-        setStatePermissions(arrayOfPermissions)
+        })
       }
-    }, [permissionData, defaultValues])
-
+      setStatePermissions(arrayOfPermissions)
+    }
+  }, [permissionData, defaultValues])
 
   return (
     <>
@@ -138,21 +150,23 @@ const CreateUpdateRoleForm: FC<Props> = ({ defaultValues }) => {
           )}
         />
         <FormLabel>Permissions</FormLabel>
-        <div className='d-flex'>
-          {statePermissions.map((permission: StatePermissions, index: number) => (
-            <div key={index} className='d-flex me-4'>
-              <input
-                className='me-2'
-                type='checkbox'
-                {...register('permissions')}
-                value={permission.id}
-                defaultChecked={permission.defaultChecked}
-              />
-              <label>{permission.name}</label>
-            </div>
-          ))}
+        <div className="d-flex">
+          {statePermissions.map(
+            (permission: StatePermissions, index: number) => (
+              <div key={index} className="d-flex me-4">
+                <input
+                  className="me-2"
+                  type="checkbox"
+                  {...register('permissions')}
+                  value={permission.id}
+                  defaultChecked={permission.defaultChecked}
+                />
+                <label>{permission.name}</label>
+              </div>
+            ),
+          )}
           {errors.permissions && (
-            <div className='invalid-feedback text-danger'>
+            <div className="invalid-feedback text-danger">
               {errors.permissions.message}
             </div>
           )}

@@ -9,7 +9,7 @@ export interface CreateUserFields {
   email: string
   password: string
   confirm_password: string
-  role_id:string
+  role_id: string
 }
 
 export interface UpdateUserFields {
@@ -18,14 +18,14 @@ export interface UpdateUserFields {
   email: string
   password?: string
   confirm_password?: string
-  role_id:string
+  role_id: string
 }
 
-interface Props{
-  defaultValues?:UserType
+interface Props {
+  defaultValues?: UserType
 }
 
-export const useCreateUpdateUserForm = ({defaultValues}:Props) => {
+export const useCreateUpdateUserForm = ({ defaultValues }: Props) => {
   const CreateUserSchema = Yup.object().shape({
     first_name: Yup.string().notRequired(),
     last_name: Yup.string().notRequired(),
@@ -39,15 +39,17 @@ export const useCreateUpdateUserForm = ({defaultValues}:Props) => {
     confirm_password: Yup.string()
       .oneOf([Yup.ref('password'), null], 'Passwords do not match')
       .required('Passwords do not match'),
-    role_id: Yup.string().required('Role field is required')
+    role_id: Yup.string().required('Role field is required'),
   })
   const UpdateUserSchema = Yup.object().shape({
     first_name: Yup.string().notRequired(),
     last_name: Yup.string().notRequired(),
     email: Yup.string().email().required('Please enter a valid email'),
     password: Yup.string().notRequired(),
-    confirm_password: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords do not match').notRequired(),
-    role_id: Yup.string().notRequired()
+    confirm_password: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Passwords do not match')
+      .notRequired(),
+    role_id: Yup.string().notRequired(),
   })
   const {
     handleSubmit,
@@ -61,12 +63,12 @@ export const useCreateUpdateUserForm = ({defaultValues}:Props) => {
       password: '',
       confirm_password: '',
       role_id: '',
-      ...defaultValues
+      ...defaultValues,
     },
     mode: 'onSubmit',
     resolver: defaultValues
-    ? yupResolver(UpdateUserSchema)
-    : yupResolver(CreateUserSchema),
+      ? yupResolver(UpdateUserSchema)
+      : yupResolver(CreateUserSchema),
   })
 
   return {

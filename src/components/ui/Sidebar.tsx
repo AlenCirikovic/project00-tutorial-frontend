@@ -15,62 +15,66 @@ interface ISidebarItem {
 const sidebarItems: ISidebarItem[] = [
   {
     title: 'Dashboard',
-    href: routes.DASHBOARD_PREFIX
+    href: routes.DASHBOARD_PREFIX,
   },
   {
     title: 'Users',
-    href: `${routes.DASHBOARD_PREFIX}/users`
+    href: `${routes.DASHBOARD_PREFIX}/users`,
   },
   {
     title: 'Roles',
-    href: `${routes.DASHBOARD_PREFIX}/roles`
+    href: `${routes.DASHBOARD_PREFIX}/roles`,
   },
   {
     title: 'Products',
-    href: `${routes.DASHBOARD_PREFIX}/products`
+    href: `${routes.DASHBOARD_PREFIX}/products`,
   },
   {
     title: 'Orders',
-    href: `${routes.DASHBOARD_PREFIX}/orders`
+    href: `${routes.DASHBOARD_PREFIX}/orders`,
   },
 ]
 
-const Item : FC<ItemProps> = ({title,setOpen,href}) => {
-  return(
-    <li className='mb-4'>
+const Item: FC<ItemProps> = ({ title, setOpen, href }) => {
+  return (
+    <li className="mb-4">
       <NavLink
-      className='text-decoration-none'
-      to={href}
-      onClick={() => setOpen(false)}>
+        className="text-decoration-none"
+        to={href}
+        onClick={() => setOpen(false)}
+      >
         {title}
       </NavLink>
     </li>
   )
 }
 
-
 const Sidebar: FC = () => {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
-  return <div>
-    <Button
-      className='sidebar__btn-menu btn-dark text-light rounded-0 d-flex justify-content-center align-items-center p-4'
-      type='button'
-      onClick={handleOpen}
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        fill="currentColor"
-        className="bi bi-list"
-        viewBox="0 0 16 16">
-        <path fillRule="evenodd"
-          d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
-      </svg>
-    </Button>
-    <Offcanvas
+  return (
+    <div>
+      <Button
+        className="sidebar__btn-menu btn-dark text-light rounded-0 d-flex justify-content-center align-items-center p-4"
+        type="button"
+        onClick={handleOpen}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          className="bi bi-list"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fillRule="evenodd"
+            d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
+          />
+        </svg>
+      </Button>
+      <Offcanvas
         show={open}
         onHide={handleClose}
         className="offcanvas offcanvas-start"
@@ -94,7 +98,8 @@ const Sidebar: FC = () => {
           </ul>
         </Offcanvas.Body>
       </Offcanvas>
-  </div>
+    </div>
+  )
 }
 
 export default Sidebar

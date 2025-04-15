@@ -11,8 +11,7 @@ interface Props {
   defaultValues?: RoleType
 }
 
-
-export const useCreateUpdateRoleForm = ({defaultValues}: Props) => {
+export const useCreateUpdateRoleForm = ({ defaultValues }: Props) => {
   const CreateUpdateRoleSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     permissions: Yup.array().min(1),
@@ -21,12 +20,12 @@ export const useCreateUpdateRoleForm = ({defaultValues}: Props) => {
     handleSubmit,
     formState: { errors },
     control,
-    register
+    register,
   } = useForm({
     defaultValues: {
       name: '',
       permissions: [],
-      ...defaultValues
+      ...defaultValues,
     },
     mode: 'onSubmit',
     resolver: yupResolver(CreateUpdateRoleSchema),
@@ -36,7 +35,7 @@ export const useCreateUpdateRoleForm = ({defaultValues}: Props) => {
     handleSubmit,
     errors,
     control,
-    register
+    register,
   }
 }
 

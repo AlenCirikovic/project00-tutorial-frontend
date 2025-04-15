@@ -26,11 +26,11 @@ interface Props {
 }
 
 const CreateUpdateUserForm: FC<Props> = ({ defaultValues }) => {
+  const { data: rolesData } = useQuery(['roles'], API.fetchRoles)
   const { handleSubmit, errors, control } = useCreateUpdateUserForm({
-    defaultValues
+    defaultValues,
   })
   const navigate = useNavigate()
-  const { data: rolesData } = useQuery(['roles'], API.fetchRoles)
   const [apiError, setApiError] = useState('')
   const [showError, setShowError] = useState(false)
 
@@ -38,10 +38,12 @@ const CreateUpdateUserForm: FC<Props> = ({ defaultValues }) => {
   const [preview, setPreview] = useState<string | null>(null)
   const [fileError, setFileError] = useState(false)
 
-  const onSubmit = handleSubmit(async (data: CreateUserFields | UpdateUserFields) => {
-    if (!defaultValues) await handleAdd(data as CreateUserFields)
-    else await handleUpdate(data as UpdateUserFields)
-  })
+  const onSubmit = handleSubmit(
+    async (data: CreateUserFields | UpdateUserFields) => {
+      if (!defaultValues) await handleAdd(data as CreateUserFields)
+      else await handleUpdate(data as UpdateUserFields)
+    },
+  )
 
   const handleAdd = async (data: CreateUserFields) => {
     if (!file) return
@@ -53,13 +55,10 @@ const CreateUpdateUserForm: FC<Props> = ({ defaultValues }) => {
       setApiError(response.data.message)
       setShowError(true)
     } else {
-      // Upload avatar
+      // Upload file
       const formData = new FormData()
       formData.append('avatar', file, file.name)
-      const fileResponse = await API.uploadAvatar(
-        formData,
-        response.data.id,
-      )
+      const fileResponse = await API.uploadAvatar(formData, response.data.id)
       if (fileResponse.data?.statusCode === StatusCode.BAD_REQUEST) {
         setApiError(fileResponse.data.message)
         setShowError(true)
@@ -90,13 +89,10 @@ const CreateUpdateUserForm: FC<Props> = ({ defaultValues }) => {
         navigate(`${routes.DASHBOARD_PREFIX}/users`)
         return
       }
-      // Upload avatar
+      // Upload file
       const formData = new FormData()
       formData.append('avatar', file, file.name)
-      const fileResponse = await API.uploadAvatar(
-        formData,
-        response.data.id,
-      )
+      const fileResponse = await API.uploadAvatar(formData, response.data.id)
       if (fileResponse.data?.statusCode === StatusCode.BAD_REQUEST) {
         setApiError(fileResponse.data.message)
         setShowError(true)
@@ -153,11 +149,16 @@ const CreateUpdateUserForm: FC<Props> = ({ defaultValues }) => {
       <Form className="user-form" onSubmit={onSubmit}>
         <Form.Group className="d-flex flex-column justify-content-center align-items-center">
           <FormLabel htmlFor="avatar" id="avatar-p">
-            <Avatar round
+            <Avatar
+              round
               src={
-                preview ? preview : defaultValues && `${process.env.REACT_APP_API_URL}/files/${defaultValues?.avatar}`
+                preview
+                  ? preview
+                  : defaultValues &&
+                    `${process.env.REACT_APP_API_URL}/files/${defaultValues?.avatar}`
               }
-              alt="Avatar" />
+              alt="Avatar"
+            />
           </FormLabel>
           <input
             onChange={handleFileChange}
@@ -252,11 +253,14 @@ const CreateUpdateUserForm: FC<Props> = ({ defaultValues }) => {
               <FormLabel htmlFor="role_id">Role</FormLabel>
               <Form.Select
                 {...field}
-                aria-label='Role'
-                aria-describedby='role_id'
-                className={errors.role_id ? 'form-control is-invalid' : 'form-control'}>
+                aria-label="Role"
+                aria-describedby="role_id"
+                className={
+                  errors.role_id ? 'form-control is-invalid' : 'form-control'
+                }
+              >
                 <option></option>
-                {rolesData.map((role: RoleType, index: number) => (
+                {rolesData?.data.map((role: RoleType, index: number) => (
                   <option key={index} value={role.id}>
                     {role.name}
                   </option>
@@ -319,7 +323,11 @@ const CreateUpdateUserForm: FC<Props> = ({ defaultValues }) => {
             </Form.Group>
           )}
         />
-        <Button className="w-100" type="submit" onMouseUp={defaultValues ? undefined : handleFileError}>
+        <Button
+          className="w-100"
+          type="submit"
+          onMouseUp={defaultValues ? undefined : handleFileError}
+        >
           {defaultValues ? 'Update user' : 'Create new user'}
         </Button>
       </Form>

@@ -84,7 +84,7 @@ const LoginForm: FC = () => {
           )}
         />
         <div className="d-flex justify-content-between align-items-center mb-2">
-          <p className="mb-0">Don{'\''}t have an account yet?</p>
+          <p className="mb-0">Don{'/'}t have an account yet?</p>
           <Link className="text-decoration-none text-end" to="/signup">
             Create account
           </Link>

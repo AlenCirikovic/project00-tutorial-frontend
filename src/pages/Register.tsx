@@ -1,5 +1,5 @@
 import Layout from 'components/ui/Layout'
-import RegisterForm from 'components/ui/user/RegisterForm'
+import RegisterForm from 'components/user/RegisterForm'
 import { FC } from 'react'
 
 const Register: FC = () => {
