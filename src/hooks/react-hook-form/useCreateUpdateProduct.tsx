@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 export interface CreateUpdateProductFields {
   title:string
   description:string
-  price:string
+  price:number
 }
 
 interface Props {
