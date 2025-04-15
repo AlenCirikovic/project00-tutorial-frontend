@@ -1,6 +1,6 @@
 import DashboardLayout from 'components/ui/DashboardLayout'
 import useMediaQuery from 'hooks/useMediaQuery'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Button, Table, Toast, ToastContainer } from 'react-bootstrap'
 import { useQuery, useMutation } from 'react-query'
 import * as API from 'api/Api'
@@ -25,6 +25,12 @@ const DashboardUsers: FC = () => {
       refetchOnWindowFocus: false,
     },
   )
+  useEffect(() => {
+    API.fetchUsers(pageNumber).then((response) => {
+      console.log(response)
+    })
+  }, [pageNumber])
+  
 
   const { mutate } = useMutation((id: string) => API.deleteUser(id), {
     onSuccess: (response) => {
@@ -65,7 +71,7 @@ const DashboardUsers: FC = () => {
         <div>Loading...</div>
       ) : (
         <>
-          {data?.data.data.length === 0 ? (
+          {Array.isArray(data?.data?.data) && data.data.data.length === 0 ? (
             <p>No users found</p>
           ) : (
             <>
