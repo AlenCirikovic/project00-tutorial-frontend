@@ -33,7 +33,7 @@ export const useCreateUpdateUserForm = ({ defaultValues }: Props) => {
     password: Yup.string()
       .matches(
         /^(?=.*\d)[A-Za-z.\s_-]+[\w~@#$%^&*+=`|{}:;!.?"()[\]-]{6,}/,
-        'Password must have at least one number, lower or upper case letter and it has to be longer than 5 characters.',
+        'Password must have at least one number, lower or upper case letter nad it has to be longer than 5 characters.',
       )
       .required(),
     confirm_password: Yup.string()
@@ -41,6 +41,7 @@ export const useCreateUpdateUserForm = ({ defaultValues }: Props) => {
       .required('Passwords do not match'),
     role_id: Yup.string().required('Role field is required'),
   })
+
   const UpdateUserSchema = Yup.object().shape({
     first_name: Yup.string().notRequired(),
     last_name: Yup.string().notRequired(),
@@ -51,9 +52,11 @@ export const useCreateUpdateUserForm = ({ defaultValues }: Props) => {
       .notRequired(),
     role_id: Yup.string().notRequired(),
   })
+
   const {
     handleSubmit,
     formState: { errors },
+    reset,
     control,
   } = useForm({
     defaultValues: {
@@ -74,6 +77,7 @@ export const useCreateUpdateUserForm = ({ defaultValues }: Props) => {
   return {
     handleSubmit,
     errors,
+    reset,
     control,
   }
 }

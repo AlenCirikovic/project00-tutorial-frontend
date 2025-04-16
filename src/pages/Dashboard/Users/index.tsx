@@ -1,15 +1,17 @@
 import DashboardLayout from 'components/ui/DashboardLayout'
-import useMediaQuery from 'hooks/useMediaQuery'
-import { FC, useEffect, useState } from 'react'
-import { Button, Table, Toast, ToastContainer } from 'react-bootstrap'
+import { FC, useState } from 'react'
+import Toast from 'react-bootstrap/Toast'
+import ToastContainer from 'react-bootstrap/ToastContainer'
 import { useQuery, useMutation } from 'react-query'
 import * as API from 'api/Api'
+import useMediaQuery from 'hooks/useMediaQuery'
 import { Link } from 'react-router-dom'
 import { routes } from 'constants/routesConstants'
+import Table from 'react-bootstrap/Table'
+import Button from 'react-bootstrap/Button'
 import { StatusCode } from 'constants/errorConstants'
 import { UserType } from 'models/auth'
 import authStore from 'stores/auth.store'
-import { observer } from 'mobx-react'
 
 const DashboardUsers: FC = () => {
   const [apiError, setApiError] = useState('')
@@ -25,12 +27,6 @@ const DashboardUsers: FC = () => {
       refetchOnWindowFocus: false,
     },
   )
-  useEffect(() => {
-    API.fetchUsers(pageNumber).then((response) => {
-      console.log(response)
-    })
-  }, [pageNumber])
-  
 
   const { mutate } = useMutation((id: string) => API.deleteUser(id), {
     onSuccess: (response) => {
@@ -47,7 +43,7 @@ const DashboardUsers: FC = () => {
       }
     },
     onError: () => {
-      setApiError('Something went wrong while deleting a user')
+      setApiError('Something went wrong while deleting a user.')
       setShowError(true)
     },
   })
@@ -71,8 +67,8 @@ const DashboardUsers: FC = () => {
         <div>Loading...</div>
       ) : (
         <>
-          {Array.isArray(data?.data?.data) && data.data.data.length === 0 ? (
-            <p>No users found</p>
+          {data?.data.data.length === 0 ? (
+            <p>No users found.</p>
           ) : (
             <>
               <Table striped bordered hover responsive>
@@ -90,7 +86,7 @@ const DashboardUsers: FC = () => {
                       <td>{item.email}</td>
                       <td>
                         {item.first_name || item.last_name
-                          ? `${item.first_name} ${item.last_name}`
+                          ? `${item.first_name ?? ''} ${item.last_name ?? ''}`
                           : '/'}
                       </td>
                       <td>{item.role?.name ?? '/'}</td>
@@ -131,6 +127,7 @@ const DashboardUsers: FC = () => {
                   ))}
                 </tbody>
               </Table>
+              {console.log(data?.data.meta.last_page)}
               {data?.data.meta.last_page > 1 && (
                 <div>
                   <Button
@@ -166,4 +163,4 @@ const DashboardUsers: FC = () => {
   )
 }
 
-export default observer(DashboardUsers)
+export default DashboardUsers

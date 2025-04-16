@@ -1,8 +1,8 @@
 import { apiRoutes } from 'constants/apiConstants'
+import { apiRequest } from './Api'
 import { LoginUserFields } from 'hooks/react-hook-form/useLogin'
 import { UserType } from 'models/auth'
 import { RegisterUserFields } from 'hooks/react-hook-form/useRegister'
-import { apiRequest } from './Api'
 import {
   CreateUserFields,
   UpdateUserFields,
@@ -11,14 +11,20 @@ import {
 export const fetchUser = async () =>
   apiRequest<undefined, UserType>('get', apiRoutes.FETCH_USER)
 
-export const signout = async () =>
-  apiRequest<undefined, void>('post', apiRoutes.SIGNOUT)
+export const fetchUsers = async (pageNumber: number) =>
+  apiRequest<number, UserType[]>(
+    'get',
+    `${apiRoutes.FETCH_USERS}?page=${pageNumber}`,
+  )
 
 export const login = async (data: LoginUserFields) =>
   apiRequest<LoginUserFields, UserType>('post', apiRoutes.LOGIN, data)
 
 export const register = async (data: RegisterUserFields) =>
   apiRequest<RegisterUserFields, UserType>('post', apiRoutes.SIGNUP, data)
+
+export const signout = async () =>
+  apiRequest<undefined, void>('post', apiRoutes.SIGNOUT)
 
 export const uploadAvatar = async (formData: FormData, id: string) =>
   apiRequest<FormData, void>(
@@ -39,9 +45,3 @@ export const updateUser = async (data: UpdateUserFields, id: string) =>
 
 export const deleteUser = async (id: string) =>
   apiRequest<string, UserType>('delete', `${apiRoutes.USERS_PREFIX}/${id}`)
-
-export const fetchUsers = async (pageNumber: number) =>
-  apiRequest<number, UserType[]>(
-    'get',
-    `${apiRoutes.FETCH_USER}?page=${pageNumber}`,
-  )
